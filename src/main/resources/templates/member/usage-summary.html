@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head><title>사용 패턴 - SubManager</title></head>
+<body>
+<section>
+
+<style>
+  .usage-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  .usage-page-header { margin-bottom: 28px; }
+
+  .usage-page-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.5px;
+    margin: 0 0 4px;
+  }
+
+  .usage-page-header p {
+    font-size: 14px;
+    color: #6B7A99;
+    margin: 0;
+  }
+
+  /* ── 상단 3 카드 ── */
+  .top-cards {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 12px rgba(26,54,126,0.07);
+    border: 1.5px solid #F0F4FF;
+  }
+
+  .stat-card-label {
+    font-size: 13px;
+    color: #6B7A99;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-card-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+
+  .stat-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  .stat-badge-up   { background: #FEE2E2; color: #DC2626; }
+  .stat-badge-down { background: #DCFCE7; color: #15803D; }
+
+  /* 다음 결제 카드 */
+  .next-payment-card {
+    background: #1A367E;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 4px 20px rgba(26,54,126,0.25);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .next-payment-card .stat-card-label { color: #93C5FD; }
+
+  .next-payment-timer {
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin: 8px 0 4px;
+  }
+
+  .next-payment-timer span {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: #93C5FD;
+    margin-left: 4px;
+  }
+
+  .next-payment-service {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 14px;
+  }
+
+  .nps-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .nps-info strong { display: block; font-size: 13px; font-weight: 700; }
+  .nps-info span   { font-size: 11px; color: #93C5FD; }
+
+  /* Quick Stats */
+  .quick-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .qs-item {
+    background: #F8FAFC;
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .qs-item-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+  }
+
+  .qs-item-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.5px;
+  }
+
+  .qs-item-value.green { color: #15803D; }
+  .qs-item-value.red   { color: #DC2626; }
+
+  /* ── 하단 2컬럼 ── */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .chart-card, .renewals-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(26,54,126,0.07);
+    border: 1.5px solid #F0F4FF;
+    padding: 22px 24px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 2px;
+  }
+
+  .card-header p {
+    font-size: 12px;
+    color: #9CA3AF;
+    margin: 0;
+  }
+
+  /* 바 차트 */
+  .bar-chart-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 140px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+
+  .bar-col-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    position: relative;
+  }
+
+  .bar-fill {
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    background: #E2E8F0;
+    min-height: 6px;
+    transition: height 0.4s ease;
+  }
+
+  .bar-fill.current { background: #1A367E; }
+
+  .bar-label-text {
+    position: absolute;
+    bottom: 4px;
+    font-size: 11px;
+    color: #9CA3AF;
+    font-weight: 500;
+  }
+
+  .bar-label-text.current-label { color: #1A367E; font-weight: 700; }
+
+  .bar-tooltip {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1A367E;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* 갱신 예정 */
+  .renewals-list { list-style: none; padding: 0; margin: 0; }
+
+  .renewal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid #F8FAFC;
+  }
+
+  .renewal-item:last-child { border-bottom: none; }
+
+  .renewal-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: #EFF6FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    color: #1A367E;
+    flex-shrink: 0;
+  }
+
+  .renewal-info { flex: 1; }
+
+  .renewal-info strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .renewal-info span { font-size: 11px; color: #9CA3AF; }
+
+  .renewal-price-wrap { text-align: right; }
+
+  .renewal-price {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .renewal-days        { font-size: 11px; font-weight: 600; color: #15803D; }
+  .renewal-days.urgent { color: #DC2626; }
+  .renewal-days.warn   { color: #A16207; }
+
+  .view-all-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A367E;
+    text-decoration: none;
+  }
+
+  .view-all-link:hover { text-decoration: underline; }
+
+  /* ── AI 배너 ── */
+  .ai-banner {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(26,54,126,0.07);
+    border: 1.5px solid #F0F4FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    gap: 24px;
+  }
+
+  .ai-banner-left { flex: 1; }
+
+  .ai-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #EFF6FF;
+    color: #1A367E;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .ai-banner-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.5px;
+    margin: 0 0 6px;
+  }
+
+  .ai-banner-desc {
+    font-size: 13px;
+    color: #6B7A99;
+    margin: 0;
+  }
+
+  .ai-banner-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+  .btn-ai-primary {
+    padding: 11px 22px;
+    background: #1A367E;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+  }
+
+  .btn-ai-primary:hover { background: #142d6e; }
+
+  .btn-ai-secondary {
+    padding: 11px 22px;
+    background: #fff;
+    color: #374151;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-ai-secondary:hover { background: #F8FAFC; }
+
+  .ai-banner-graphic {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .top-cards  { grid-template-columns: 1fr; }
+    .bottom-grid { grid-template-columns: 1fr; }
+    .ai-banner  { flex-direction: column; align-items: flex-start; }
+    .ai-banner-graphic { display: none; }
+  }
+</style>
+
+<div class="usage-wrapper">
+
+  <!-- 페이지 헤더 -->
+  <div class="usage-page-header">
+    <h1>Dashboard Overview</h1>
+    <p th:text="'안녕하세요, ' + ${member.name} + '님. 이번 달 구독 현황입니다.'">
+      이번 달 구독 현황입니다.
+    </p>
+  </div>
+
+  <!-- 상단 3 카드 -->
+  <div class="top-cards">
+
+    <!-- 월간 지출 -->
+    <div class="stat-card">
+      <p class="stat-card-label">월간 지출</p>
+      <p class="stat-card-value"
+         th:text="${#numbers.formatCurrency(usageStats.monthlyTotal)}">₩0</p>
+      <span th:class="${usageStats.monthlyChangePct >= 0} ? 'stat-badge stat-badge-up' : 'stat-badge stat-badge-down'"
+            th:text="${(usageStats.monthlyChangePct >= 0 ? '+' : '') + usageStats.monthlyChangePct + '% vs 지난 달'}">-</span>
+      <div style="margin-top:14px;">
+        <div style="height:6px;background:#F0F4FF;border-radius:3px;overflow:hidden;">
+          <div th:style="'width:' + ${usageStats.budgetUsagePct} + '%;height:100%;background:#1A367E;border-radius:3px;'"></div>
+        </div>
+        <p style="font-size:12px;color:#9CA3AF;margin:5px 0 0;"
+           th:text="'월 예산의 ' + ${usageStats.budgetUsagePct} + '%'">-</p>
+      </div>
+    </div>
+
+    <!-- 다음 결제 (파란 카드) -->
+    <div class="next-payment-card">
+      <p class="stat-card-label">다음 결제까지</p>
+      <div class="next-payment-timer"
+           th:text="${usageStats.nextPaymentDays}">0<span>일</span>
+        <span>일</span>
+      </div>
+      <!-- 가장 임박한 구독 -->
+      <div class="next-payment-service" th:if="${usageStats.nextSubscription != null}">
+        <div class="nps-icon"
+             th:text="${#strings.substring(usageStats.nextSubscription.plan.name, 0, 2)}">??</div>
+        <div class="nps-info">
+          <strong th:text="${usageStats.nextSubscription.plan.name}">서비스명</strong>
+          <span th:text="${#numbers.formatCurrency(usageStats.nextSubscription.plan.monthlyPrice)
+                          + ' · ' + #temporals.format(usageStats.nextSubscription.dueDate, 'yyyy년 M월')}">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stat-card">
+      <p class="stat-card-label">빠른 통계</p>
+      <div class="quick-stats-grid">
+        <div class="qs-item">
+          <p class="qs-item-label">총 구독</p>
+          <p class="qs-item-value"
+             th:text="${usageStats.totalCount}">0</p>
+        </div>
+        <div class="qs-item">
+          <p class="qs-item-label">평균 비용</p>
+          <p class="qs-item-value"
+             th:text="${#numbers.formatCurrency(usageStats.avgMonthlyPrice)}">₩0</p>
+        </div>
+        <div class="qs-item">
+          <p class="qs-item-label">절감 YTD</p>
+          <p class="qs-item-value green"
+             th:text="${#numbers.formatCurrency(usageStats.savedYtd)}">₩0</p>
+        </div>
+        <div class="qs-item">
+          <p class="qs-item-label">경보</p>
+          <p class="qs-item-value red"
+             th:text="${usageStats.alertCount}">0</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 하단 2컬럼: 차트 + 갱신 예정 -->
+  <div class="bottom-grid">
+
+    <!-- 지출 트렌드 바 차트 -->
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <h3>지출 트렌드</h3>
+          <p>최근 6개월 지출 현황</p>
+        </div>
+      </div>
+      <div class="bar-chart-area">
+        <!-- usageStats.monthlyTrend: List<MonthlyAmount> {label, amount, isCurrent} -->
+        <div class="bar-col-wrap"
+             th:each="m : ${usageStats.monthlyTrend}">
+          <!-- 최대값 대비 비율로 높이 계산 -->
+          <div th:if="${m.isCurrent}">
+            <span class="bar-tooltip"
+                  th:text="${#numbers.formatCurrency(m.amount)}"></span>
+          </div>
+          <div th:class="${m.isCurrent} ? 'bar-fill current' : 'bar-fill'"
+               th:style="'height:' + ${m.heightPct} + '%;width:100%;'"></div>
+          <span th:class="${m.isCurrent} ? 'bar-label-text current-label' : 'bar-label-text'"
+                th:text="${m.label}">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 갱신 예정 -->
+    <div class="renewals-card">
+      <div class="card-header">
+        <h3>갱신 예정</h3>
+      </div>
+      <ul class="renewals-list">
+        <li class="renewal-item"
+            th:each="r : ${usageStats.upcomingRenewals}">
+          <div class="renewal-icon"
+               th:text="${#strings.substring(r.plan.name, 0, 1)}">?</div>
+          <div class="renewal-info">
+            <strong th:text="${r.plan.name}">서비스명</strong>
+            <span   th:text="${r.plan.category}">카테고리</span>
+          </div>
+          <div class="renewal-price-wrap">
+            <span class="renewal-price"
+                  th:text="${#numbers.formatCurrency(r.plan.monthlyPrice)}">₩0</span>
+            <span th:class="${r.daysUntilDue <= 3} ? 'renewal-days urgent'
+                           : (${r.daysUntilDue <= 7} ? 'renewal-days warn' : 'renewal-days')"
+                  th:text="${r.daysUntilDue + '일 후'}">-</span>
+          </div>
+        </li>
+      </ul>
+      <a th:href="@{/subscriptions}" class="view-all-link">전체 갱신 일정 보기 →</a>
+    </div>
+
+  </div>
+
+  <!-- AI 최적화 배너: 방치 구독이 있을 때만 표시 -->
+  <div class="ai-banner" th:if="${usageStats.neglectedCount > 0}">
+    <div class="ai-banner-left">
+      <span class="ai-tag">⚡ AI 최적화</span>
+      <p class="ai-banner-title"
+         th:text="'미사용 구독으로 월 ' + ${#numbers.formatCurrency(usageStats.neglectedSavings)} + ' 절감 가능'">
+        절감 가능
+      </p>
+      <p class="ai-banner-desc"
+         th:text="${usageStats.neglectedCount} + '개의 장기 미사용 서비스를 발견했습니다. 해지하면 월 지출을 줄일 수 있어요.'">
+        -
+      </p>
+    </div>
+    <div class="ai-banner-actions">
+      <a th:href="@{/recommendation}" class="btn-ai-primary">추천 보기</a>
+      <button class="btn-ai-secondary">나중에</button>
+    </div>
+    <div class="ai-banner-graphic">
+      <svg width="44" height="44" fill="none" viewBox="0 0 24 24"
+           stroke="#1A367E" stroke-width="1.5">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/>
+        <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+      </svg>
+    </div>
+  </div>
+
+</div>

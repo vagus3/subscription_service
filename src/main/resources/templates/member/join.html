@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head><title>회원가입 - SubManager</title></head>
+<body>
+<section>
+
+<style>
+  .join-wrapper {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F4F6FB;
+    padding: 40px 16px;
+  }
+
+  .join-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 32px rgba(26,54,126,0.10);
+    padding: 48px 44px 40px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .join-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .join-logo-icon {
+    width: 38px;
+    height: 38px;
+    background: #1A367E;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .join-logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1A367E;
+    letter-spacing: -0.5px;
+  }
+
+  .join-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  .join-desc {
+    font-size: 14px;
+    color: #6B7A99;
+    margin-bottom: 30px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #111827;
+    background: #F8FAFC;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #1A367E;
+    box-shadow: 0 0 0 3px rgba(26,54,126,0.08);
+    background: #fff;
+  }
+
+  .field-error {
+    font-size: 12px;
+    color: #DC2626;
+    margin-top: 4px;
+  }
+
+  .form-group input.is-invalid {
+    border-color: #FCA5A5;
+    background: #FEF2F2;
+  }
+
+  .password-hint {
+    font-size: 12px;
+    color: #94A3B8;
+    margin-top: 4px;
+  }
+
+  .terms-group {
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .terms-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: #374151;
+    margin-bottom: 10px;
+  }
+
+  .terms-item:last-child { margin-bottom: 0; }
+
+  .terms-item input[type="checkbox"] {
+    margin-top: 2px;
+    accent-color: #1A367E;
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+
+  .terms-item a {
+    color: #1A367E;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .terms-item a:hover { text-decoration: underline; }
+
+  .terms-all {
+    font-weight: 700;
+    color: #111827;
+    font-size: 13px;
+  }
+
+  .btn-join {
+    width: 100%;
+    padding: 13px;
+    background: #1A367E;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.2px;
+    margin-bottom: 16px;
+  }
+
+  .btn-join:hover { background: #142d6e; transform: translateY(-1px); }
+  .btn-join:active { transform: translateY(0); }
+
+  .join-login {
+    text-align: center;
+    font-size: 14px;
+    color: #6B7A99;
+  }
+
+  .join-login a {
+    color: #1A367E;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .join-login a:hover { text-decoration: underline; }
+
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #E2E8F0;
+  }
+
+  .step-dot.active {
+    background: #1A367E;
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  .step-dot.done { background: #93C5FD; }
+</style>
+
+<div class="join-wrapper">
+  <div class="join-card">
+
+    <div class="join-logo">
+      <div class="join-logo-icon">S</div>
+      <span class="join-logo-text">SubManager</span>
+    </div>
+
+    <div class="step-indicator">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+
+    <p class="join-title">계정 만들기</p>
+    <p class="join-desc">구독을 스마트하게 관리하는 첫 번째 단계입니다.</p>
+
+    <form th:action="@{/join}" method="post" th:object="${memberForm}">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input type="text" id="name" th:field="*{name}"
+                 th:class="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                 placeholder="홍길동" required />
+          <span class="field-error" th:if="${#fields.hasErrors('name')}"
+                th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">전화번호</label>
+          <input type="tel" id="phone" th:field="*{phone}"
+                 placeholder="010-0000-0000" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" th:field="*{email}"
+               th:class="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+               placeholder="alex@example.com" required />
+        <span class="field-error" th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" th:field="*{password}"
+               th:class="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+               placeholder="8자 이상 입력하세요" required />
+        <p class="password-hint">영문, 숫자, 특수문자를 포함한 8자 이상</p>
+        <span class="field-error" th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="passwordConfirm">비밀번호 확인</label>
+        <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}"
+               th:class="${#fields.hasErrors('passwordConfirm')} ? 'is-invalid' : ''"
+               placeholder="비밀번호를 다시 입력하세요" required />
+        <span class="field-error" th:if="${#fields.hasErrors('passwordConfirm')}"
+              th:errors="*{passwordConfirm}"></span>
+      </div>
+
+      <!-- 약관 동의 -->
+      <div class="terms-group">
+        <div class="terms-item">
+          <input type="checkbox" id="agreeAll" onclick="toggleAll(this)" />
+          <label for="agreeAll" class="terms-all">전체 동의</label>
+        </div>
+        <div class="terms-item">
+          <input type="checkbox" id="agreeTerms" name="agreeTerms" required />
+          <label for="agreeTerms">
+            (필수) <a th:href="@{/terms}">이용약관</a>에 동의합니다
+          </label>
+        </div>
+        <div class="terms-item">
+          <input type="checkbox" id="agreePrivacy" name="agreePrivacy" required />
+          <label for="agreePrivacy">
+            (필수) <a th:href="@{/privacy}">개인정보 처리방침</a>에 동의합니다
+          </label>
+        </div>
+        <div class="terms-item">
+          <input type="checkbox" id="agreeMarketing" name="agreeMarketing" />
+          <label for="agreeMarketing">(선택) 마케팅 정보 수신에 동의합니다</label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-join">가입하기</button>
+
+    </form>
+
+    <p class="join-login">
+      이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a>
+    </p>
+
+  </div>
+</div>
+
+<script>
+  function toggleAll(source) {
+    const checkboxes = document.querySelectorAll('.terms-group input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = source.checked);
+  }
+</script>
+
+</section>
+</body>
+</html>
