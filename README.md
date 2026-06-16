@@ -23,44 +23,68 @@
 ## 2. 프로젝트 폴더 구조
 ```
 subscription-service/
-├── .github/workflows/deploy.yml # CI/CD (팀장)
-├── scripts/deploy.sh # 배포 쉘 스크립트 (팀장)
-├── src/main/
-│ ├── java/com/example/sub/
-│ │ ├── SubscriptionApplication.java
-│ │ ├── config/ # Security, JPA, Web, Scheduler
-│ │ ├── controller/ # 화면별 분리
-│ │ ├── service/
-│ │ ├── domain/entity/
-│ │ ├── repository/
-│ │ ├── dto/
-│ │ └── util/ # MailUtil 등
-│ ├── resources/
-│ │ ├── application.yml # 공통 설정
-│ │ ├── application-prod.yml # 운영 설정
-│ │ ├── application-local.yml # 로컬 전용
-│ │ ├── db/init.sql # MySQL 초기화 스크립트
-│ │ ├── static/ # npm run build 산출물
-│ │ │ ├── css/main.css
-│ │ │ └── js/main.js
-│ │ └── templates/
-│ │ ├── layout.html # 공통 레이아웃
-│ │ ├── fragments/
-│ │ │ ├── header.html
-│ │ │ ├── footer.html
-│ │ │ └── nav.html
-│ │ ├── member/ # 회원 화면
-│ │ ├── subscribe/ # 구독 신청/결과
-│ │ ├── plan/ # 플랜 목록/상세
-│ │ └── admin/ # 통계/관리 (선택)
-│ └── frontend/ # 원본 에셋 (프론트1 전담)
-│ ├── package.json
-│ ├── package-lock.json
-│ ├── vite.config.js
-│ └── src/
-│ ├── css/main.css
-│ └── js/main.js
-└── build.gradle
+├── .github/
+│   └── workflows/
+│       └── deploy.yml                 # CI/CD 워크플로우
+├── bin/                               # 로컬 실행/보조 스크립트
+├── docs/
+│   └── Backend2.md                    # 백엔드 2 작업 문서
+├── gradle/wrapper/                    # Gradle Wrapper 설정
+├── scripts/
+│   └── deploy.sh                      # 배포 쉘 스크립트
+├── src/
+│   ├── main/
+│   │   ├── frontend/                  # Vite 원본 프론트 에셋
+│   │   │   ├── main.js
+│   │   │   ├── css/
+│   │   │   │   ├── base.css
+│   │   │   │   └── layout.css
+│   │   │   └── styles/
+│   │   │       ├── global.css
+│   │   │       ├── utilties.css
+│   │   │       ├── variable.css
+│   │   │       └── components/
+│   │   │           ├── button.css
+│   │   │           ├── card.css
+│   │   │           └── sidebar.css
+│   │   ├── java/com/example/sub/
+│   │   │   ├── SubscriptionApplication.java
+│   │   │   ├── config/                # Security, Scheduler 설정
+│   │   │   ├── controller/            # 화면/요청 Controller
+│   │   │   ├── domain/entity/         # JPA Entity, Enum
+│   │   │   ├── dto/                   # 요청/응답 DTO
+│   │   │   ├── repository/            # Spring Data JPA Repository
+│   │   │   ├── service/               # 비즈니스 로직
+│   │   │   └── util/                  # 메일, 경보 등 공통 유틸
+│   │   └── resources/
+│   │       ├── application.yml        # 공통 설정
+│   │       ├── application-local.yml  # 로컬 설정
+│   │       ├── application-prod.yml   # 운영 설정
+│   │       ├── db/
+│   │       │   └── init.sql           # MySQL 초기화 스크립트
+│   │       ├── static/assets/
+│   │       │   └── main.js            # Vite 빌드 산출물
+│   │       └── templates/
+│   │           ├── index.html
+│   │           ├── layout.html        # 공통 레이아웃
+│   │           ├── login.html
+│   │           ├── recommendation.html
+│   │           ├── cancellation-log.html
+│   │           ├── admin/             # 관리자 화면
+│   │           ├── fragments/         # header, footer, nav
+│   │           ├── member/            # 회원/내 구독 화면
+│   │           ├── plan/              # 플랜 목록/상세 화면
+│   │           └── subscribe/         # 구독 신청/결과 화면
+│   └── test/
+│       └── java/com/example/sub/      # 테스트 코드
+├── build.gradle
+├── settings.gradle
+├── gradlew
+├── gradlew.bat
+├── package.json                       # Vite 빌드 스크립트
+├── package-lock.json
+├── vite.config.js
+└── PROGRESS_BACKEND1.md
 ```
 
 ## 3. 팀원별 역할 상세
