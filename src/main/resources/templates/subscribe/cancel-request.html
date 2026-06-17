@@ -1,0 +1,48 @@
+<!--/*
+  * [프론트엔드 3 - 구독 해지 신청 페이지]
+  * 
+  * 1. 사용 백엔드 변수 (Model Key)
+  *    - subscriptionId (Long): 해지 대상 구독 정보 ID
+  * 
+  * 2. 주요 주의사항
+  *    - 모든 페이지는 layout.html 상속이 필수입니다.
+  *    - 취소 링크는 /subscriptions 경로로 매핑되어야 합니다.
+  */-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}"
+      lang="ko">
+<head>
+    <title>구독 해지 신청 - SubTrack</title>
+</head>
+<body>
+<section class="container narrow-container">
+    <div class="page-header">
+        <p class="eyebrow">Cancellation</p>
+        <h1 class="page-title" style="color: var(--danger, #e11d48);">구독 해지 신청</h1>
+        <p class="page-subtitle">해지하려는 이유를 남겨주시면 해지 다이어리에 기록되어 현명한 지출 관리에 도움을 줍니다.</p>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/cancellation/cancel}" method="post" class="stack-form">
+            <input type="hidden" name="subscriptionId" th:value="${subscriptionId}">
+            
+            <label class="form-group">
+                <span>해지 사유 (메모)</span>
+                <textarea name="reason" rows="4" placeholder="사용하지 않음, 비용 부담 등 상세한 해지 사유를 적어주세요." required style="width: 100%; padding: var(--space-xs); border: 1px solid var(--border-color); border-radius: var(--radius-small); font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+            </label>
+
+            <div style="margin-top: 8px; margin-bottom: 20px; font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+                <p style="margin: 0; display: flex; align-items: center; gap: 6px;">
+                    <i class="bi bi-info-circle" style="color: var(--primary);"></i>
+                    해지 완료 후 7일 이내에 메일로 발송되는 링크를 통해 언제든지 구독을 복구하실 수 있습니다.
+                </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" style="background-color: var(--danger, #e11d48); border-color: var(--danger, #e11d48);">해지하기</button>
+            <a th:href="@{/subscriptions}" class="btn btn-outline btn-full" style="margin-top: 10px; justify-content: center; text-decoration: none; display: inline-flex; align-items: center;">취소</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>
