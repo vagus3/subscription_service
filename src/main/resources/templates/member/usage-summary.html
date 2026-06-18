@@ -411,70 +411,69 @@
   <!-- 페이지 헤더 -->
   <div class="usage-page-header">
     <h1>Dashboard Overview</h1>
-    <p th:text="'안녕하세요, ' + ${member.name} + '님. 이번 달 구독 현황입니다.'">
-      이번 달 구독 현황입니다.
+    <p th:text="'Track, optimize, and manage your monthly recurring costs.'">
+      Track, optimize, and manage your monthly recurring costs.
     </p>
   </div>
 
-  <!-- 상단 3 카드 -->
+  <!-- Top 3 cards -->
   <div class="top-cards">
 
-    <!-- 월간 지출 -->
+    <!-- Monthly Spending -->
     <div class="stat-card">
-      <p class="stat-card-label">월간 지출</p>
+      <p class="stat-card-label">Monthly Spending</p>
       <p class="stat-card-value"
-         th:text="${#numbers.formatCurrency(usageStats.monthlyTotal)}">₩0</p>
+         th:text="${#numbers.formatCurrency(usageStats.monthlyTotal)}">$0</p>
       <span th:class="${usageStats.monthlyChangePct >= 0} ? 'stat-badge stat-badge-up' : 'stat-badge stat-badge-down'"
-            th:text="${(usageStats.monthlyChangePct >= 0 ? '+' : '') + usageStats.monthlyChangePct + '% vs 지난 달'}">-</span>
+            th:text="${(usageStats.monthlyChangePct >= 0 ? '+' : '') + usageStats.monthlyChangePct + '% vs last month'}">-</span>
       <div style="margin-top:14px;">
         <div style="height:6px;background:#F0F4FF;border-radius:3px;overflow:hidden;">
           <div th:style="'width:' + ${usageStats.budgetUsagePct} + '%;height:100%;background:#1A367E;border-radius:3px;'"></div>
         </div>
         <p style="font-size:12px;color:#9CA3AF;margin:5px 0 0;"
-           th:text="'월 예산의 ' + ${usageStats.budgetUsagePct} + '%'">-</p>
+           th:text="${usageStats.budgetUsagePct} + '% of monthly budget'">-</p>
       </div>
     </div>
 
-    <!-- 다음 결제 (파란 카드) -->
+    <!-- Next Payment (blue card) -->
     <div class="next-payment-card">
-      <p class="stat-card-label">다음 결제까지</p>
-      <div class="next-payment-timer"
-           th:text="${usageStats.nextPaymentDays}">0<span>일</span>
-        <span>일</span>
+      <p class="stat-card-label">Next Payment In</p>
+      <div class="next-payment-timer">
+        <span th:text="${usageStats.nextPaymentDays}">0</span><span> Days</span>
       </div>
-      <!-- 가장 임박한 구독 -->
+      <!-- Closest upcoming subscription -->
       <div class="next-payment-service" th:if="${usageStats.nextSubscription != null}">
         <div class="nps-icon"
              th:text="${#strings.substring(usageStats.nextSubscription.plan.name, 0, 2)}">??</div>
         <div class="nps-info">
-          <strong th:text="${usageStats.nextSubscription.plan.name}">서비스명</strong>
+          <strong th:text="${usageStats.nextSubscription.plan.name}">Service</strong>
           <span th:text="${#numbers.formatCurrency(usageStats.nextSubscription.plan.monthlyPrice)
-                          + ' · ' + #temporals.format(usageStats.nextSubscription.dueDate, 'yyyy년 M월')}">-</span>
+                          + ' · ' + #temporals.format(usageStats.nextSubscription.dueDate, 'MMM yyyy')}">-</span>
         </div>
       </div>
     </div>
 
     <!-- Quick Stats -->
     <div class="stat-card">
-      <p class="stat-card-label">빠른 통계</p>
+      <p class="stat-card-label">Quick Stats</p>
       <div class="quick-stats-grid">
         <div class="qs-item">
-          <p class="qs-item-label">총 구독</p>
+          <p class="qs-item-label">Total Apps</p>
           <p class="qs-item-value"
              th:text="${usageStats.totalCount}">0</p>
         </div>
         <div class="qs-item">
-          <p class="qs-item-label">평균 비용</p>
+          <p class="qs-item-label">Avg. Cost</p>
           <p class="qs-item-value"
-             th:text="${#numbers.formatCurrency(usageStats.avgMonthlyPrice)}">₩0</p>
+             th:text="${#numbers.formatCurrency(usageStats.avgMonthlyPrice)}">$0</p>
         </div>
         <div class="qs-item">
-          <p class="qs-item-label">절감 YTD</p>
+          <p class="qs-item-label">Saved YTD</p>
           <p class="qs-item-value green"
-             th:text="${#numbers.formatCurrency(usageStats.savedYtd)}">₩0</p>
+             th:text="${#numbers.formatCurrency(usageStats.savedYtd)}">$0</p>
         </div>
         <div class="qs-item">
-          <p class="qs-item-label">경보</p>
+          <p class="qs-item-label">Alerts</p>
           <p class="qs-item-value red"
              th:text="${usageStats.alertCount}">0</p>
         </div>
@@ -483,15 +482,15 @@
 
   </div>
 
-  <!-- 하단 2컬럼: 차트 + 갱신 예정 -->
+  <!-- Bottom 2-col: chart + upcoming renewals -->
   <div class="bottom-grid">
 
-    <!-- 지출 트렌드 바 차트 -->
+    <!-- Spending Trends bar chart -->
     <div class="chart-card">
       <div class="card-header">
         <div>
-          <h3>지출 트렌드</h3>
-          <p>최근 6개월 지출 현황</p>
+          <h3>Spending Trends</h3>
+          <p>Last 6 months expenditure</p>
         </div>
       </div>
       <div class="bar-chart-area">
@@ -511,10 +510,10 @@
       </div>
     </div>
 
-    <!-- 갱신 예정 -->
+    <!-- Upcoming Renewals -->
     <div class="renewals-card">
       <div class="card-header">
-        <h3>갱신 예정</h3>
+        <h3>Upcoming Renewals</h3>
       </div>
       <ul class="renewals-list">
         <li class="renewal-item"
@@ -522,39 +521,39 @@
           <div class="renewal-icon"
                th:text="${#strings.substring(r.plan.name, 0, 1)}">?</div>
           <div class="renewal-info">
-            <strong th:text="${r.plan.name}">서비스명</strong>
-            <span   th:text="${r.plan.category}">카테고리</span>
+            <strong th:text="${r.plan.name}">Service</strong>
+            <span   th:text="${r.plan.category}">Category</span>
           </div>
           <div class="renewal-price-wrap">
             <span class="renewal-price"
-                  th:text="${#numbers.formatCurrency(r.plan.monthlyPrice)}">₩0</span>
+                  th:text="${#numbers.formatCurrency(r.plan.monthlyPrice)}">$0</span>
             <span th:class="${r.daysUntilDue <= 3} ? 'renewal-days urgent'
                            : (${r.daysUntilDue <= 7} ? 'renewal-days warn' : 'renewal-days')"
-                  th:text="${r.daysUntilDue + '일 후'}">-</span>
+                  th:text="'In ' + ${r.daysUntilDue} + ' days'">-</span>
           </div>
         </li>
       </ul>
-      <a th:href="@{/subscriptions}" class="view-all-link">전체 갱신 일정 보기 →</a>
+      <a th:href="@{/subscriptions}" class="view-all-link">View All Renewals →</a>
     </div>
 
   </div>
 
-  <!-- AI 최적화 배너: 방치 구독이 있을 때만 표시 -->
+  <!-- AI Optimization banner: shown only when neglected subscriptions exist -->
   <div class="ai-banner" th:if="${usageStats.neglectedCount > 0}">
     <div class="ai-banner-left">
-      <span class="ai-tag">⚡ AI 최적화</span>
+      <span class="ai-tag">⚡ AI Optimization</span>
       <p class="ai-banner-title"
-         th:text="'미사용 구독으로 월 ' + ${#numbers.formatCurrency(usageStats.neglectedSavings)} + ' 절감 가능'">
-        절감 가능
+         th:text="'Save ' + ${#numbers.formatCurrency(usageStats.neglectedSavings)} + '/month on unused subscriptions'">
+        Save on unused subscriptions
       </p>
       <p class="ai-banner-desc"
-         th:text="${usageStats.neglectedCount} + '개의 장기 미사용 서비스를 발견했습니다. 해지하면 월 지출을 줄일 수 있어요.'">
+         th:text="'We\'ve identified ' + ${usageStats.neglectedCount} + ' services you haven\'t used in the last 60 days. Canceling these would reduce your monthly overhead by 11%.'">
         -
       </p>
     </div>
     <div class="ai-banner-actions">
-      <a th:href="@{/recommendation}" class="btn-ai-primary">추천 보기</a>
-      <button class="btn-ai-secondary">나중에</button>
+      <a th:href="@{/recommendation}" class="btn-ai-primary">View Recommendations</a>
+      <button class="btn-ai-secondary">Dismiss</button>
     </div>
     <div class="ai-banner-graphic">
       <svg width="44" height="44" fill="none" viewBox="0 0 24 24"

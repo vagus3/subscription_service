@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:subtrack;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dev@example.com
+    password: devpassword
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false

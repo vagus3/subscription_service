@@ -5,18 +5,27 @@
 <body>
     <nav class="site-nav" th:fragment="nav">
         <ul>
-            <li><a th:href="@{/member/usage-summary}">▦ Dashboard</a></li>
-            <li><a th:href="@{/subscriptions}">▣ Subscriptions</a></li>
-            <li><a th:href="@{/billing}">◴ Billing</a></li>
-            <li><a th:href="@{/settings}">⚙ Settings</a></li>
-            <li sec:authorize="!isAuthenticated()"><a href="/login">로그인</a></li>
-            <li sec:authorize="!isAuthenticated()"><a href="/join">회원가입</a></li>
-            <li sec:authorize="isAuthenticated()">
-                <form th:action="@{/logout}" method="post" style="display:inline;">
-                    <button type="submit">로그아웃</button>
-                </form>
-            </li>
+            <li><a th:href="@{/member/usage-summary}">&#9646; Dashboard</a></li>
+            <li><a th:href="@{/subscriptions}">&#9634; Subscriptions</a></li>
+            <li><a th:href="@{/billing}">&#9676; Billing</a></li>
+            <li><a th:href="@{/settings}">&#9881; Settings</a></li>
         </ul>
+
+        <div class="nav-bottom">
+            <a th:href="@{/}" class="btn-add-sub">+ Add Subscription</a>
+            <div class="nav-user" sec:authorize="isAuthenticated()">
+                <div class="nav-user-avatar" sec:authentication="name" th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</div>
+                <div class="nav-user-info">
+                    <strong sec:authentication="name">User</strong>
+                    <form th:action="@{/logout}" method="post" style="margin:0;">
+                        <button type="submit" class="nav-logout-btn">Sign out</button>
+                    </form>
+                </div>
+            </div>
+            <div class="nav-user" sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;">Sign In</a>
+            </div>
+        </div>
     </nav>
 </body>
 </html>
