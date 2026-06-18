@@ -1,8 +1,10 @@
 package com.example.sub.controller;
 
 import com.example.sub.service.CheckInService;
+import com.example.sub.service.AuthenticatedMemberService;
 import com.example.sub.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,24 +21,36 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
     private final CheckInService checkInService;
+    private final UsageStatisticsService usageStatisticsService;
+    private final AuthenticatedMemberService authenticatedMemberService;
 
     @GetMapping("/subscriptions")
-    public String mySubscriptions(Model model) {
-        // 실제 운영시는 SecurityContextHolder에서 memberId를 가져와야 함 (임시로 1L 사용)
-        Long mockMemberId = 1L;
-        
+    public String mySubscriptions(Authentication authentication, Model model) {
+        Long memberId = authenticatedMemberService.requireMember(authentication).getId();
+
         // Model 규약: subscriptions
-        model.addAttribute("subscriptions", subscriptionService.findMemberSubscriptions(mockMemberId));
+        var subscriptions = subscriptionService.findMemberSubscriptions(memberId);
+        model.addAttribute("subscriptions", subscriptions);
+        model.addAttribute("monthlySpend", subscriptions.stream()
+                .filter(s -> !"CANCELLED".equals(s.getStatus()))
+                .mapToInt(s -> s.getPlan().getMonthlyPrice())
+                .sum());
+        model.addAttribute("activeCount", subscriptions.stream().filter(s -> "ACTIVE".equals(s.getStatus())).count());
+        model.addAttribute("expiringCount", subscriptions.stream().filter(s -> s.getDaysUntilDue() <= 7 && s.getDaysUntilDue() >= 0).count());
+        model.addAttribute("savings", subscriptions.stream()
+                .filter(s -> s.getAlertLevel() != null && s.getAlertLevel().name().matches("DANGER|CRITICAL"))
+                .mapToInt(s -> s.getPlan().getMonthlyPrice())
+                .sum());
         return "member/subscriptions";
     }
 
     @PostMapping("/subscribe")
     public String subscribe(@RequestParam Long planId, 
                             @RequestParam(defaultValue = "#{T(java.time.LocalDate).now().toString()}") String startDate, 
+                            Authentication authentication,
                             RedirectAttributes rttr) {
-        // 실제 운영시는 SecurityContextHolder에서 memberId를 가져와야 함
-        Long mockMemberId = 1L;
-        subscriptionService.subscribe(mockMemberId, planId, LocalDate.parse(startDate));
+        Long memberId = authenticatedMemberService.requireMember(authentication).getId();
+        subscriptionService.subscribe(memberId, planId, LocalDate.parse(startDate));
         
         rttr.addFlashAttribute("successMessage", "구독 신청이 완료되었습니다.");
         return "redirect:/subscriptions";
@@ -46,8 +60,12 @@ public class SubscriptionController {
     public String checkIn(@PathVariable Long id, 
                           @RequestParam(required = false) Integer durationMinutes,
                           RedirectAttributes rttr) {
-        checkInService.checkIn(id, durationMinutes);
-        rttr.addFlashAttribute("successMessage", "체크인이 완료되었습니다.");
+        try {
+            checkInService.checkIn(id, durationMinutes);
+            rttr.addFlashAttribute("successMessage", "체크인이 완료되었습니다.");
+        } catch (IllegalStateException e) {
+            rttr.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/";
     }
 

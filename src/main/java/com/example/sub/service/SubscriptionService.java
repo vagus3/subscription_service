@@ -7,11 +7,13 @@ import com.example.sub.domain.entity.SubscriptionPlan;
 import com.example.sub.repository.MemberRepository;
 import com.example.sub.repository.MemberSubscriptionRepository;
 import com.example.sub.repository.SubscriptionPlanRepository;
+import com.example.sub.repository.SubscriptionUsageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -22,6 +24,7 @@ public class SubscriptionService {
     private final SubscriptionPlanRepository planRepository;
     private final MemberSubscriptionRepository memberSubscriptionRepository;
     private final MemberRepository memberRepository;
+    private final SubscriptionUsageRepository usageRepository;
 
     public List<SubscriptionPlan> findAllPlans() {
         return planRepository.findAll();
@@ -32,7 +35,17 @@ public class SubscriptionService {
     }
 
     public List<MemberSubscription> findMemberSubscriptions(Long memberId) {
-        return memberSubscriptionRepository.findByMemberId(memberId);
+        LocalDate today = LocalDate.now();
+        LocalDate monthStart = today.withDayOfMonth(1);
+        List<MemberSubscription> subscriptions = memberSubscriptionRepository.findByMemberId(memberId);
+        subscriptions.forEach(subscription -> {
+            if (subscription.getDueDate() != null) {
+                subscription.setDaysUntilDue((int) ChronoUnit.DAYS.between(today, subscription.getDueDate()));
+            }
+            subscription.setMonthlyCheckInCount((int) usageRepository
+                    .countByMemberSubscriptionIdAndUsedDateBetweenAndUsedTrue(subscription.getId(), monthStart, today));
+        });
+        return subscriptions;
     }
 
     @Transactional
@@ -46,6 +59,7 @@ public class SubscriptionService {
                 .member(member)
                 .plan(plan)
                 .startDate(startDate)
+                .dueDate(startDate.plusMonths(1))
                 .status("ACTIVE")
                 .lastUsedAt(startDate)
                 .alertLevel(AlertLevel.NORMAL)

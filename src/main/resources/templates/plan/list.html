@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head><title>Plans - SubManager</title></head>
+<body>
+<section>
+  <div class="page-shell">
+    <h1 class="page-title">Available Subscription Plans</h1>
+    <p class="page-subtitle">Choose a service to add it to your recurring cost tracker.</p>
+    <div class="metric-grid">
+      <div class="panel" th:each="p : ${plans}">
+        <p class="metric-label" th:text="${p.category}">OTT</p>
+        <h2 th:text="${p.name}">Netflix</h2>
+        <p class="metric-value" th:text="${#numbers.formatCurrency(p.monthlyPrice)}">$19.99</p>
+        <p class="muted" th:text="'Yearly ' + ${#numbers.formatCurrency(p.yearlyPrice)}">Yearly</p>
+        <div class="flex gap-2 mt-8">
+          <a class="btn btn-outline" th:href="@{/plans/{id}(id=${p.id})}">Details</a>
+          <form th:action="@{/subscribe}" method="post">
+            <input type="hidden" name="planId" th:value="${p.id}">
+            <input type="hidden" name="startDate" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+            <button class="btn btn-primary" type="submit">Add Subscription</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

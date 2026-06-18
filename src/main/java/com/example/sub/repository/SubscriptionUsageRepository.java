@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface SubscriptionUsageRepository extends JpaRepository<SubscriptionUsage, Long> {
     List<SubscriptionUsage> findByMemberSubscriptionIdAndUsedDateBetween(Long subscriptionId, LocalDate start, LocalDate end);
+    boolean existsByMemberSubscriptionIdAndUsedDate(Long subscriptionId, LocalDate usedDate);
+    long countByMemberSubscriptionIdAndUsedDateBetweenAndUsedTrue(Long subscriptionId, LocalDate start, LocalDate end);
 }

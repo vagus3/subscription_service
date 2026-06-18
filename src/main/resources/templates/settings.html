@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head><title>Settings - SubManager</title></head>
+<body>
+<section>
+  <div class="page-shell">
+    <h1 class="page-title">Notification & Alert Settings</h1>
+    <p class="page-subtitle">Configure how and when you want to be notified about upcoming expenses and budget status.</p>
+    <div class="settings-grid">
+      <div class="settings-stack">
+        <div class="panel">
+          <h2>Payment Reminders</h2>
+          <div class="toggle-row"><div><strong>Advance Warning</strong><p>Send a notification 3 days before a payment is due.</p></div><button class="toggle is-on" data-toggle aria-pressed="true"></button></div>
+          <div class="toggle-row"><div><strong>Immediate Reminder</strong><p>Alert me 1 day before any recurring charge.</p></div><button class="toggle" data-toggle aria-pressed="false"></button></div>
+          <div class="toggle-row"><div><strong>Transaction Results</strong><p>Instant notification for payment success or failure.</p></div><button class="toggle is-on" data-toggle aria-pressed="true"></button></div>
+        </div>
+        <div class="panel">
+          <h2>Notification Delivery</h2>
+          <div class="flex gap-4 mt-8">
+            <button class="btn btn-outline">Push Notifications</button>
+            <button class="btn btn-outline">Email Digest</button>
+          </div>
+        </div>
+      </div>
+      <div class="settings-stack">
+        <div class="panel panel-blue">
+          <h2>Spending Limits</h2>
+          <p class="metric-label">Monthly Budget Limit</p>
+          <p class="metric-value">$ 1200</p>
+          <div class="progress-track"><span style="width:72%;"></span></div>
+          <p>Current Spent · 72% of limit</p>
+        </div>
+        <div class="panel">
+          <h2>Alert Thresholds</h2>
+          <div class="toggle-row"><div><strong>Budget Reach 80%</strong><p>Notify when monthly spend is high.</p></div><button class="toggle is-on" data-toggle></button></div>
+          <div class="toggle-row"><div><strong>Unexpected Price Hike</strong><p>Alert when a subscription cost increases.</p></div><button class="toggle is-on" data-toggle></button></div>
+          <button class="btn btn-outline" type="button">Add Custom Threshold</button>
+        </div>
+      </div>
+    </div>
+    <div class="action-bar"><button class="btn btn-ghost">Discard Changes</button><button class="btn btn-primary">Save Preferences</button></div>
+  </div>
+</section>
+</body>
+</html>
