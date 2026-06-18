@@ -39,7 +39,7 @@ jobs:
   deploy-render:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ secrets.RENDER_DEPLOY_HOOK_URL != '' }}
+    if: github.repository == 'hyeonggyu/subscription-service' && secrets.RENDER_DEPLOY_HOOK_URL != ''
     steps:
       - name: Trigger Render deploy
         run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
