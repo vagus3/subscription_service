@@ -55,7 +55,8 @@ jobs:
           if [[ "$RENDER_DEPLOY_HOOK_URL" != https://api.render.com/deploy/srv-* ]]; then
             echo "RENDER_DEPLOY_HOOK_URL does not look like a Render deploy hook URL."
             echo "Expected format: https://api.render.com/deploy/srv-...?key=..."
-            exit 1
+            echo "Skipping explicit Render deploy hook. Render auto deploy can still run from the push."
+            exit 0
           fi
 
           http_code="$(curl -sS -o render-response.txt -w "%{http_code}" "$RENDER_DEPLOY_HOOK_URL")"

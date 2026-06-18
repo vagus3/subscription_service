@@ -1,8 +1,17 @@
+FROM node:20 AS frontend
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY vite.config.js ./
+COPY src/main/frontend ./src/main/frontend
+RUN npm run build
+
 FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
 COPY . .
+COPY --from=frontend /app/src/main/resources/static ./src/main/resources/static
 RUN chmod +x ./gradlew
-RUN ./gradlew bootJar --no-daemon
+RUN ./gradlew bootJar --no-daemon -x npmBuild
 
 FROM eclipse-temurin:17-jre
 WORKDIR /app
