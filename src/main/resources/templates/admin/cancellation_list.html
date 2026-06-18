@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>해지 로그 관리</title></head>
+<body>
+<h2>전체 해지 로그</h2>
+<a th:href="@{/admin/cancellation}">전체</a> |
+<a th:href="@{/admin/cancellation?status=recoverable}">복구 가능</a>
+<table border="1">
+    <thead>
+        <tr><th>ID</th><th>사용자ID</th><th>플랜</th><th>해지일</th><th>사유</th><th>복구 가능</th><th>복구일</th></tr>
+    </thead>
+    <tbody>
+        <tr th:each="log : ${logs}">
+            <td th:text="${log.id}"/>
+            <td th:text="${log.memberId}"/>
+            <td th:text="${log.planName}"/>
+            <td th:text="${#temporals.format(log.cancelledAt, 'yyyy-MM-dd')}"/>
+            <td th:text="${log.reason}"/>
+            <td th:text="${log.recoverable} ? '가능' : '불가능'"/>
+            <td th:text="${log.recoveredAt} != null ? ${#temporals.format(log.recoveredAt, 'yyyy-MM-dd')} : '-'"/>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

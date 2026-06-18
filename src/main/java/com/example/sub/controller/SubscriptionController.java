@@ -3,7 +3,6 @@ package com.example.sub.controller;
 import com.example.sub.service.CheckInService;
 import com.example.sub.service.AuthenticatedMemberService;
 import com.example.sub.service.SubscriptionService;
-import com.example.sub.service.UsageStatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

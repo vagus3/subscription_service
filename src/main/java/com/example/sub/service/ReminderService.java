@@ -1,6 +1,5 @@
 package com.example.sub.service;
 
-import com.example.sub.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -8,8 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ReminderService {
-
-    private final MailUtil mailUtil;
 
     // 매일 오전 9시 발송
     @Scheduled(cron = "0 0 9 * * *")
