@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>구독 해지</title></head>
+<body>
+<h2>구독 해지 신청</h2>
+<form th:action="@{/cancellation/cancel}" method="post">
+    <input type="hidden" name="subscriptionId" th:value="${subscriptionId}">
+    <label>해지 사유</label>
+    <textarea name="reason" rows="3" cols="40"></textarea>
+    <button type="submit">해지하기</button>
+    <a th:href="@{/my-subscriptions}">취소</a>
+</form>
+<p>※ 해지 후 7일 이내에 복구 링크를 이메일로 보내드립니다.</p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>해지 이력</title></head>
+<body>
+<h2>내 해지 이력</h2>
+<table border="1">
+    <thead>
+        <tr><th>플랜</th><th>해지일</th><th>사유</th><th>복구 가능</th><th>복구일</th></tr>
+    </thead>
+    <tbody>
+        <tr th:each="log : ${logs}">
+            <td th:text="${log.planName}"/>
+            <td th:text="${#temporals.format(log.cancelledAt, 'yyyy-MM-dd')}"/>
+            <td th:text="${log.reason}"/>
+            <td th:text="${log.recoverable} ? '가능' : '불가능'"/>
+            <td th:text="${log.recoveredAt} != null ? ${#temporals.format(log.recoveredAt, 'yyyy-MM-dd')} : '-'"/>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
