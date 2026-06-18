@@ -21,7 +21,6 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
     private final CheckInService checkInService;
-    private final UsageStatisticsService usageStatisticsService;
     private final AuthenticatedMemberService authenticatedMemberService;
 
     @GetMapping("/subscriptions")
