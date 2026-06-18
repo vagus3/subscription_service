@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:subtrack;DB_CLOSE_DELAY=-1;MODE=MySQL
-    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:subscription;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
     username: sa
     password:
+    driver-class-name: org.h2.Driver
 
   h2:
     console:
@@ -14,16 +14,20 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: false
+    defer-datasource-initialization: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: false
 
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/cloud-data.sql
+
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: dev@example.com
-    password: devpassword
+    host: localhost
+    port: 25
     properties:
       mail:
         smtp:
