@@ -39,7 +39,12 @@ jobs:
   deploy-render:
     needs: build
     runs-on: ubuntu-latest
-    if: github.repository == 'hyeonggyu/subscription-service' && secrets.RENDER_DEPLOY_HOOK_URL != ''
     steps:
       - name: Trigger Render deploy
-        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        # secrets 값이 있을 때만 curl 명령어를 실행하도록 셸 스크립트로 처리합니다.
+        run: |
+          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" ]; then
+            curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          else
+            echo "RENDER_DEPLOY_HOOK_URL이 설정되지 않아 배포를 건너뜁니다."
+          fi
