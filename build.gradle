@@ -63,14 +63,3 @@ tasks.named('test') {
 jar {
     enabled = false
 }
-
-// 프론트엔드 빌드 태스크
-tasks.register('npmBuild', Exec) {
-    group = 'build'
-    description = 'Build frontend assets with Vite'
-    def npmCommand = org.gradle.internal.os.OperatingSystem.current().isWindows() ? 'npm.cmd' : 'npm'
-    commandLine npmCommand, 'run', 'build'
-}
-
-// bootJar 또는 processResources 전에 항상 실행
-processResources.dependsOn('npmBuild')
