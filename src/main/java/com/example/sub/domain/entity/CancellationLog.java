@@ -18,6 +18,10 @@ public class CancellationLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Column(name = "recovery_token")
+    private String recoveryToken;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
