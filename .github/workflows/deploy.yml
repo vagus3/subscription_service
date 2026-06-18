@@ -44,10 +44,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render deploy
-        # secrets 값이 있을 때만 curl 명령어를 실행하도록 셸 스크립트로 처리합니다.
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" ]; then
-            curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
-          else
-            echo "RENDER_DEPLOY_HOOK_URL이 설정되지 않아 배포를 건너뜁니다."
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL is not set. Skipping Render deploy."
+            exit 0
           fi
+
+          if [[ "$RENDER_DEPLOY_HOOK_URL" != https://api.render.com/deploy/srv-* ]]; then
+            echo "RENDER_DEPLOY_HOOK_URL does not look like a Render deploy hook URL."
+            echo "Expected format: https://api.render.com/deploy/srv-...?key=..."
+            exit 1
+          fi
+
+          http_code="$(curl -sS -o render-response.txt -w "%{http_code}" "$RENDER_DEPLOY_HOOK_URL")"
+          echo "Render deploy hook HTTP status: $http_code"
+
+          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
+            echo "Render deploy hook failed. Response body:"
+            cat render-response.txt
+            exit 1
+          fi
+
+          echo "Render deploy hook accepted."
