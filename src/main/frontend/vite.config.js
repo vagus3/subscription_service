@@ -12,8 +12,8 @@ export default defineConfig({
         'css/main': path.resolve(__dirname, 'src/css/main.css')
       },
       output: {
-        entryFileNames: 'js/[name].js',
-        assetFileNames: '[name].[ext]'
+        entryFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       }
     }
   },

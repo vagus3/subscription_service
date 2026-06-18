@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>해지 다이어리 - SubTrack</title>
+</head>
+<body>
+<section class="container" style="max-width: 1000px; margin: 0 auto; padding: var(--space-xl) var(--space-md);">
+    <div class="page-header" style="margin-bottom: var(--space-xl);">
+        <h1 class="page-title">해지 다이어리</h1>
+        <p class="page-subtitle">떠나보낸 구독 서비스를 기록하고 과도한 재가입을 방지하세요.</p>
+    </div>
+
+    <!-- 해지 내역이 없을 때 -->
+    <div th:if="${#lists.isEmpty(logs)}" class="empty-state card" style="text-align: center; padding: 60px 24px;">
+        <i class="bi bi-journal-x" style="font-size: 48px; color: var(--text-muted); margin-bottom: 20px; display: block;"></i>
+        <h3>아직 기록된 해지 내역이 없습니다.</h3>
+        <p>해지한 구독 서비스가 생기면 이곳에 자동으로 기록됩니다.</p>
+        <a th:href="@{/subscriptions}" class="btn-primary" style="display: inline-flex; margin-top: 20px; text-decoration: none;">내 구독 관리하러 가기</a>
+    </div>
+
+    <!-- 해지 내역 목록 -->
+    <div th:unless="${#lists.isEmpty(logs)}" class="log-grid" style="display: grid; gap: var(--space-md);">
+        <article th:each="log : ${logs}" class="card" style="padding: var(--space-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="service-icon" style="width: 48px; height: 48px; background: var(--bg-main); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: var(--primary);"
+                         th:text="${#strings.substring(log.plan.name, 0, 1)}">?</div>
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin: 0;" th:text="${log.plan.name}">서비스명</h3>
+                        <span style="font-size: 13px; color: var(--text-muted);" th:text="${#temporals.format(log.cancelledAt, 'yyyy.MM.dd') + ' 해지'}">2026.06.18 해지</span>
+                    </div>
+                </div>
+                <div class="log-tags" style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: 300px;">
+                    <span th:each="tag : ${#strings.arraySplit(log.tags, ',')}" 
+                          class="badge badge-secondary" th:text="${tag}">태그</span>
+                </div>
+            </div>
+            
+            <div class="log-memo card" style="background: var(--bg-main); border: none; padding: 15px; margin-top: 10px;">
+                <p style="font-size: 14px; color: var(--text-main); margin-bottom: 0; line-height: 1.6;">
+                    <i class="bi bi-quote" style="color: var(--primary); font-size: 20px; margin-right: 5px;"></i>
+                    <span th:text="${log.memo}">해지 사유 및 메모 내용이 출력됩니다.</span>
+                </p>
+            </div>
+        </article>
+    </div>
+</section>
+</body>
+</html>

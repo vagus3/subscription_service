@@ -1,202 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(~{::title}, ~{::section})}">
-<head><title>로그인 - SubManager</title></head>
+<head><title>로그인 - SubTrack</title></head>
 <body>
-<section>
+<section class="login-container" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: var(--space-md);">
+  <div class="login-card card" style="width: 100%; max-width: 440px; padding: var(--space-xl);">
 
-<style>
-  .login-wrapper {
-    min-height: calc(100vh - 120px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #F4F6FB;
-    padding: 40px 16px;
-  }
-
-  .login-card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 32px rgba(26,54,126,0.10);
-    padding: 48px 44px 40px;
-    width: 100%;
-    max-width: 440px;
-  }
-
-  .login-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-
-  .login-logo-icon {
-    width: 38px;
-    height: 38px;
-    background: #1A367E;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -1px;
-  }
-
-  .login-logo-text {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1A367E;
-    letter-spacing: -0.5px;
-  }
-
-  .login-subtitle {
-    font-size: 13px;
-    color: #6B7A99;
-    margin-bottom: 32px;
-  }
-
-  .login-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 6px;
-    letter-spacing: -0.5px;
-  }
-
-  .login-desc {
-    font-size: 14px;
-    color: #6B7A99;
-    margin-bottom: 28px;
-  }
-
-  .form-group {
-    margin-bottom: 18px;
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 6px;
-  }
-
-  .form-group input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid #E2E8F0;
-    border-radius: 10px;
-    font-size: 14px;
-    color: #111827;
-    background: #F8FAFC;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    box-sizing: border-box;
-  }
-
-  .form-group input:focus {
-    border-color: #1A367E;
-    box-shadow: 0 0 0 3px rgba(26,54,126,0.08);
-    background: #fff;
-  }
-
-  .login-options {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    font-size: 13px;
-  }
-
-  .login-options label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #6B7A99;
-    cursor: pointer;
-  }
-
-  .login-options a {
-    color: #1A367E;
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .login-options a:hover { text-decoration: underline; }
-
-  .btn-login {
-    width: 100%;
-    padding: 13px;
-    background: #1A367E;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    letter-spacing: 0.2px;
-  }
-
-  .btn-login:hover { background: #142d6e; transform: translateY(-1px); }
-  .btn-login:active { transform: translateY(0); }
-
-  .login-divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 22px 0;
-    color: #CBD5E1;
-    font-size: 12px;
-  }
-  .login-divider::before,
-  .login-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #E2E8F0;
-  }
-
-  .login-register {
-    text-align: center;
-    font-size: 14px;
-    color: #6B7A99;
-    margin-top: 6px;
-  }
-
-  .login-register a {
-    color: #1A367E;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .login-register a:hover { text-decoration: underline; }
-
-  .alert-error {
-    background: #FEF2F2;
-    border: 1.5px solid #FCA5A5;
-    color: #DC2626;
-    border-radius: 10px;
-    padding: 11px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-</style>
-
-<div class="login-wrapper">
-  <div class="login-card">
-
-    <div class="login-logo">
-      <div class="login-logo-icon">S</div>
-      <span class="login-logo-text">SubManager</span>
+    <div class="login-logo" style="display: flex; align-items: center; gap: 10px; margin-bottom: var(--space-sm);">
+      <div class="login-logo-icon" style="width: 40px; height: 40px; background: var(--primary); border-radius: var(--radius-small); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 20px;">S</div>
+      <span class="login-logo-text" style="font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -0.05em;">SubTrack</span>
     </div>
+    <p class="login-subtitle" style="font-size: 13px; color: var(--text-muted); margin-bottom: var(--space-lg);">사용량 기반 구독 관리 서비스</p>
+
+    <h2 class="login-title" style="font-size: 28px; font-weight: 800; margin-bottom: 8px;">다시 오셨군요!</h2>
+    <p class="login-desc" style="color: var(--text-muted); margin-bottom: var(--space-lg); font-size: 15px;">스마트한 구독 관리를 시작하세요.</p>
+
+    <!-- 로그인 실패 에러 -->
+    <div class="alert-error badge-danger" th:if="${param.error}" style="width: 100%; padding: 12px; border-radius: var(--radius-small); margin-bottom: var(--space-md); display: flex; align-items: center; gap: 8px; font-size: 13px;">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      이메일 또는 비밀번호가 올바르지 않습니다.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+      <div class="form-group">
+        <label for="username">이메일 주소</label>
+        <input type="email" id="username" name="username" class="form-control"
+               placeholder="example@subtrack.com" required autocomplete="email" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: var(--space-md);">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" class="form-control"
+               placeholder="비밀번호를 입력하세요" required autocomplete="current-password" />
+      </div>
+
+      <div class="login-options" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg); font-size: 14px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted);">
+          <input type="checkbox" name="remember-me" style="width: 16px; height: 16px; accent-color: var(--primary);">
+          로그인 유지
+        </label>
+        <a th:href="@{/member/forgot}" style="color: var(--primary); font-weight: 600; text-decoration: none;">비밀번호 찾기</a>
+      </div>
+
+      <button type="submit" class="btn-primary" style="width: 100%; padding: 14px;">로그인</button>
+    </form>
+
+    <div class="login-divider" style="display: flex; align-items: center; gap: 15px; margin: var(--space-lg) 0; color: var(--border-color); font-size: 13px;">
+      <span style="flex: 1; height: 1px; background: var(--border-color);"></span>
+      <span style="color: var(--text-muted);">또는</span>
+      <span style="flex: 1; height: 1px; background: var(--border-color);"></span>
+    </div>
+
+    <p class="login-register" style="text-align: center; font-size: 15px; color: var(--text-muted);">
+      아직 계정이 없으신가요?
+      <a th:href="@{/join}" style="color: var(--primary); font-weight: 700; text-decoration: none; margin-left: 5px;">무료 회원가입</a>
+    </p>
+
+  </div>
+</section>
+</body>
     <p class="login-subtitle">Premium Plan</p>
 
     <p class="login-title">다시 오셨군요!</p>

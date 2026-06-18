@@ -1,366 +1,134 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(~{::title}, ~{::section})}">
-<head><title>마이페이지 - SubManager</title></head>
+<head><title>마이페이지 - SubTrack</title></head>
 <body>
-<section>
-
-<style>
-  .mypage-wrapper {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 36px 24px 60px;
-  }
-
-  .mypage-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .mypage-header-left h1 {
-    font-size: 28px;
-    font-weight: 800;
-    color: #111827;
-    letter-spacing: -0.5px;
-    margin: 0 0 4px;
-  }
-
-  .mypage-header-left p {
-    font-size: 14px;
-    color: #6B7A99;
-    margin: 0;
-  }
-
-  .mypage-user-badge {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fff;
-    border: 1.5px solid #E2E8F0;
-    border-radius: 12px;
-    padding: 10px 16px;
-  }
-
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    background: #1A367E;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: 800;
-    font-size: 16px;
-  }
-
-  .user-info-text strong {
-    display: block;
-    font-size: 14px;
-    font-weight: 700;
-    color: #111827;
-  }
-
-  .user-info-text span {
-    font-size: 12px;
-    color: #6B7A99;
-  }
-
-  .summary-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-bottom: 32px;
-  }
-
-  .summary-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 22px 24px;
-    box-shadow: 0 2px 12px rgba(26,54,126,0.07);
-    border: 1.5px solid #F0F4FF;
-  }
-
-  .summary-card.highlight {
-    background: #1A367E;
-    border-color: #1A367E;
-  }
-
-  .summary-card-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #6B7A99;
-    margin-bottom: 8px;
-  }
-
-  .summary-card.highlight .summary-card-label { color: #93C5FD; }
-
-  .summary-card-value {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1A367E;
-    letter-spacing: -1px;
-    margin-bottom: 4px;
-  }
-
-  .summary-card.highlight .summary-card-value { color: #fff; }
-
-  .summary-card-sub {
-    font-size: 12px;
-    color: #94A3B8;
-  }
-
-  .summary-card.highlight .summary-card-sub { color: #93C5FD; }
-
-  .subscriptions-section {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(26,54,126,0.07);
-    border: 1.5px solid #F0F4FF;
-    overflow: hidden;
-    margin-bottom: 28px;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 24px;
-    border-bottom: 1.5px solid #F0F4FF;
-  }
-
-  .section-header h2 {
-    font-size: 17px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0;
-  }
-
-  .btn-sm {
-    padding: 7px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1.5px solid #E2E8F0;
-    background: #fff;
-    color: #374151;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-  }
-
-  .btn-sm:hover { background: #F8FAFC; }
-
-  .btn-primary-sm {
-    background: #1A367E;
-    border-color: #1A367E;
-    color: #fff;
-  }
-
-  .btn-primary-sm:hover { background: #142d6e; }
-
-  .subs-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .subs-table th {
-    font-size: 11px;
-    font-weight: 700;
-    color: #9CA3AF;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 12px 24px;
-    text-align: left;
-    background: #FAFBFF;
-    border-bottom: 1.5px solid #F0F4FF;
-  }
-
-  .subs-table td {
-    padding: 16px 24px;
-    border-bottom: 1px solid #F8FAFC;
-    font-size: 14px;
-    color: #374151;
-    vertical-align: middle;
-  }
-
-  .subs-table tr:last-child td { border-bottom: none; }
-  .subs-table tr:hover td { background: #FAFBFF; }
-
-  .service-name-cell {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .service-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 14px;
-    color: #fff;
-    flex-shrink: 0;
-    background: #1A367E;
-  }
-
-  .service-name-text strong {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: #111827;
-  }
-
-  .service-name-text span {
-    font-size: 12px;
-    color: #9CA3AF;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .badge::before { content: '●'; font-size: 7px; }
-
-  .badge-ACTIVE    { background: #DCFCE7; color: #15803D; }
-  .badge-CANCELLED { background: #F1F5F9; color: #94A3B8; }
-  .badge-PAUSED    { background: #FEF9C3; color: #A16207; }
-
-  .price-cell {
-    font-weight: 700;
-    color: #111827;
-    font-size: 15px;
-  }
-
-  .price-cell.cancelled {
-    color: #94A3B8;
-    text-decoration: line-through;
-  }
-
-  .btn-action {
-    padding: 6px 14px;
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1.5px solid #E2E8F0;
-    background: #fff;
-    color: #374151;
-    white-space: nowrap;
-  }
-
-  .btn-action:hover { background: #FEE2E2; border-color: #FCA5A5; color: #DC2626; }
-
-  .btn-reactivate {
-    border-color: #93C5FD;
-    color: #1A367E;
-    background: #EFF6FF;
-  }
-
-  .btn-reactivate:hover { background: #DBEAFE; color: #1A367E; border-color: #1A367E; }
-
-  .empty-state {
-    text-align: center;
-    padding: 48px 24px;
-    color: #9CA3AF;
-  }
-
-  .empty-state p { margin: 8px 0 0; font-size: 14px; }
-
-  .profile-section {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(26,54,126,0.07);
-    border: 1.5px solid #F0F4FF;
-    padding: 24px;
-  }
-
-  .profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 18px;
-  }
-
-  .profile-field label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #9CA3AF;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 4px;
-  }
-
-  .profile-field p {
-    font-size: 14px;
-    color: #111827;
-    font-weight: 500;
-    margin: 0;
-    padding: 8px 0;
-    border-bottom: 1px solid #F1F5F9;
-  }
-
-  .btn-edit {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: #1A367E;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s;
-    margin-top: 18px;
-  }
-
-  .btn-edit:hover { background: #142d6e; }
-
-  @media (max-width: 768px) {
-    .summary-cards { grid-template-columns: 1fr; }
-    .profile-grid  { grid-template-columns: 1fr; }
-    .mypage-header { flex-direction: column; }
-    .subs-table th:nth-child(3),
-    .subs-table td:nth-child(3) { display: none; }
-  }
-</style>
-
-<div class="mypage-wrapper">
+<section class="mypage-wrapper" style="max-width: 1100px; margin: 0 auto; padding: var(--space-xl) var(--space-md);">
 
   <!-- 상단 헤더 -->
-  <div class="mypage-header">
+  <div class="mypage-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-xl); flex-wrap: wrap; gap: var(--space-md);">
     <div class="mypage-header-left">
-      <h1>마이페이지</h1>
-      <p>내 구독을 한눈에 파악하고 관리하세요.</p>
+      <h1 class="page-title">마이페이지</h1>
+      <p class="page-subtitle">내 구독을 한눈에 파악하고 관리하세요.</p>
     </div>
-    <div class="mypage-user-badge">
-      <div class="user-avatar"
+    <div class="mypage-user-badge card" style="display: flex; align-items: center; gap: 12px; padding: 12px 20px; margin-bottom: 0;">
+      <div class="user-avatar" style="width: 44px; height: 44px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px;"
            th:text="${#strings.substring(member.name, 0, 1)}">A</div>
       <div class="user-info-text">
-        <strong th:text="${member.name}">이름</strong>
-        <span   th:text="${member.email}">이메일</span>
+        <strong style="display: block; font-size: 15px; font-weight: 700; color: var(--text-main);" th:text="${member.name}">이름</strong>
+        <span style="font-size: 12px; color: var(--text-muted);" th:text="${member.email}">이메일</span>
       </div>
     </div>
   </div>
+
+  <!-- 요약 카드 3개 -->
+  <div class="summary-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-bottom: var(--space-xl);">
+    <div class="summary-card card">
+      <p class="summary-card-label" style="font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px;">이번 달 지출</p>
+      <p class="summary-card-value" style="font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.05em; margin-bottom: 5px;"
+         th:text="${#numbers.formatCurrency(usageStats.monthlyTotal)}">₩0</p>
+      <p class="summary-card-sub" style="font-size: 12px; color: var(--text-muted);"
+         th:text="${usageStats.monthlyChangePct + '% vs 지난 달'}">-</p>
+    </div>
+    <div class="summary-card card">
+      <p class="summary-card-label" style="font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px;">활성 구독</p>
+      <p class="summary-card-value" style="font-size: 28px; font-weight: 800; color: var(--text-main); letter-spacing: -0.05em; margin-bottom: 5px;"
+         th:text="${usageStats.activeCount}">0</p>
+      <p class="summary-card-sub" style="font-size: 12px; color: var(--text-muted);"
+         th:text="${usageStats.expiringCount + '개 만료 예정'}">-</p>
+    </div>
+    <div class="summary-card card highlight" style="background: var(--primary); color: white;">
+      <p class="summary-card-label" style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); margin-bottom: 10px;">절감 가능 금액</p>
+      <p class="summary-card-value" style="font-size: 28px; font-weight: 800; color: white; letter-spacing: -0.05em; margin-bottom: 5px;"
+         th:text="${#numbers.formatCurrency(usageStats.savingsAmount)}">₩0</p>
+      <p class="summary-card-sub" style="font-size: 12px; color: rgba(255,255,255,0.8);">⚡ 자동 최적화 준비됨</p>
+    </div>
+  </div>
+
+  <!-- 구독 목록 테이블 -->
+  <div class="subscriptions-section data-table-container">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border-color);">
+      <h2 style="font-size: 18px; font-weight: 700; margin: 0;">내 구독 목록</h2>
+      <a th:href="@{/subscriptions}" class="btn-primary btn-sm">전체 보기</a>
+    </div>
+
+    <!-- 구독이 없을 때 -->
+    <div class="empty-state" style="padding: 60px 24px; text-align: center; color: var(--text-muted);" th:if="${#lists.isEmpty(subscriptions)}">
+      <i class="bi bi-credit-card-2-back" style="font-size: 40px; margin-bottom: 15px; display: block;"></i>
+      <p>등록된 구독이 없습니다.</p>
+    </div>
+
+    <!-- 구독 목록 -->
+    <table class="data-table" th:unless="${#lists.isEmpty(subscriptions)}">
+      <thead>
+        <tr>
+          <th>서비스명</th>
+          <th>상태</th>
+          <th>시작일</th>
+          <th>월간 사용량</th>
+          <th>가격</th>
+          <th>관리</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="s : ${subscriptions}">
+          <td>
+            <div class="service-name-cell" style="display: flex; align-items: center; gap: 12px;">
+              <div class="service-icon" style="width: 36px; height: 36px; background: var(--primary-soft); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;"
+                   th:text="${#strings.substring(s.plan.name, 0, 1)}">N</div>
+              <div class="service-name-text">
+                <strong style="display: block; font-size: 14px; font-weight: 700; color: var(--text-main);" th:text="${s.plan.name}">서비스명</strong>
+                <span style="font-size: 12px; color: var(--text-muted);" th:text="${s.plan.category}">카테고리</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="badge" th:classappend="'badge-' + (${s.status == 'ACTIVE' ? 'success' : (s.status == 'CANCELLED' ? 'secondary' : 'warning')})"
+                  th:text="${s.status}">ACTIVE</span>
+          </td>
+          <td th:text="${#temporals.format(s.startDate, 'yyyy.MM.dd')}">-</td>
+          <td th:text="${s.monthlyCheckInCount + '회 체크인'}">0회 체크인</td>
+          <td th:style="${s.status == 'CANCELLED' ? 'text-decoration: line-through; color: var(--text-muted);' : 'font-weight: 700; color: var(--text-main);'}"
+              th:text="${#numbers.formatCurrency(s.plan.monthlyPrice)}">₩0</td>
+          <td>
+            <button th:if="${s.status != 'CANCELLED'}" class="btn-ghost btn-sm"
+                    th:onclick="|location.href='@{/subscriptions/{id}/cancel(id=${s.id})}'|">해지</button>
+            <button th:if="${s.status == 'CANCELLED'}" class="btn-primary btn-sm"
+                    th:onclick="|location.href='@{/subscriptions/{id}/reactivate(id=${s.id})}'|">재활성</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 계정 정보 -->
+  <div class="profile-section card" style="margin-top: var(--space-lg);">
+    <div class="section-header" style="margin-bottom: var(--space-md);">
+      <h2 style="font-size: 18px; font-weight: 700; margin: 0;">계정 정보</h2>
+    </div>
+    <div class="profile-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md);">
+      <div class="profile-field">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">이름</label>
+        <p style="font-size: 15px; font-weight: 600; padding: 10px 0; border-bottom: 1px solid var(--border-color);" th:text="${member.name}">-</p>
+      </div>
+      <div class="profile-field">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">이메일</label>
+        <p style="font-size: 15px; font-weight: 600; padding: 10px 0; border-bottom: 1px solid var(--border-color);" th:text="${member.email}">-</p>
+      </div>
+      <div class="profile-field">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">가입일</label>
+        <p style="font-size: 15px; font-weight: 600; padding: 10px 0; border-bottom: 1px solid var(--border-color);" th:text="${#temporals.format(member.createdAt, 'yyyy.MM.dd')}">-</p>
+      </div>
+      <div class="profile-field">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">권한</label>
+        <p style="font-size: 15px; font-weight: 600; padding: 10px 0; border-bottom: 1px solid var(--border-color);" th:text="${member.role}">-</p>
+      </div>
+    </div>
+    <a th:href="@{/member/update}" class="btn-primary btn-sm" style="margin-top: 20px;">정보 수정</a>
+  </div>
+
+</section>
+</body>
 
   <!-- 요약 카드 3개 -->
   <div class="summary-cards">
