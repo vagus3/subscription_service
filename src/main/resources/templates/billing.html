@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head><title>Billing - SubManager</title></head>
+<body>
+<section>
+  <div class="page-shell">
+    <div class="billing-top">
+      <div class="panel">
+        <h2>Yearly Spending Summary</h2>
+        <p class="page-subtitle">Overview of your recurring expenses for 2024</p>
+        <p class="metric-label">Total Spent YTD</p>
+        <p class="metric-value" th:text="${#numbers.formatCurrency(yearlySpend)}">$4,280.50</p>
+        <div class="usage-bar" style="width: 60%; height: 10px;"><span style="width:85%;"></span></div>
+      </div>
+      <div class="panel panel-blue">
+        <h2>Next Payment</h2>
+        <p>Adobe Creative Cloud<br>June 24, 2024</p>
+        <p class="metric-value">$54.99</p>
+        <button class="btn btn-outline" type="button">Manage Service</button>
+      </div>
+    </div>
+    <div class="table-card">
+      <div class="table-toolbar"><h2>Billing History</h2><button class="btn btn-outline">More Filters</button></div>
+      <table class="data-table">
+        <thead><tr><th>Service & Invoice ID</th><th>Date</th><th>Amount</th><th>Payment Method</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr th:each="i : ${invoices}">
+            <td><strong th:text="${i.service}">AWS Hosting Services</strong><br><span class="muted" th:text="${i.invoiceId}">#INV</span></td>
+            <td th:text="${i.date}">Jun 15, 2024</td>
+            <td><strong th:text="${#numbers.formatCurrency(i.amount)}">$142.60</strong></td>
+            <td th:text="${i.method}">Visa</td>
+            <td><button class="btn btn-outline">View</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</body>
+</html>

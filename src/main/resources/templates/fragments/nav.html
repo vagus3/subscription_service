@@ -5,9 +5,10 @@
 <body>
     <nav class="site-nav" th:fragment="nav">
         <ul>
-            <li><a href="/">플랜 둘러보기</a></li>
-            <li sec:authorize="isAuthenticated()"><a href="/subscriptions">내 구독 관리</a></li>
-            <li sec:authorize="isAuthenticated()"><a href="/member/mypage">마이페이지</a></li>
+            <li><a th:href="@{/member/usage-summary}">▦ Dashboard</a></li>
+            <li><a th:href="@{/subscriptions}">▣ Subscriptions</a></li>
+            <li><a th:href="@{/billing}">◴ Billing</a></li>
+            <li><a th:href="@{/settings}">⚙ Settings</a></li>
             <li sec:authorize="!isAuthenticated()"><a href="/login">로그인</a></li>
             <li sec:authorize="!isAuthenticated()"><a href="/join">회원가입</a></li>
             <li sec:authorize="isAuthenticated()">

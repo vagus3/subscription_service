@@ -3,7 +3,7 @@ package com.example.sub.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -14,8 +14,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/plans/**", "/join", "/login", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/member/**", "/subscribe/**", "/checkin/**").authenticated()
+                .requestMatchers("/", "/plans/**", "/join", "/login", "/assets/**", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/member/**", "/subscribe/**", "/subscriptions/**", "/checkin/**", "/billing", "/settings").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
@@ -35,6 +35,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

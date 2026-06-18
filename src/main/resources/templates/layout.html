@@ -13,6 +13,17 @@
     <div class="app-container">
         <!-- Header -->
         <header th:replace="~{fragments/header :: header}"></header>
+
+        <div class="topbar">
+            <input class="search-box" type="search" placeholder="Search subscriptions..." aria-label="Search">
+            <div class="topbar-actions">
+                <span aria-hidden="true">♧</span>
+                <span aria-hidden="true">?</span>
+                <span class="avatar" aria-hidden="true"></span>
+                <span sec:authorize="isAuthenticated()" sec:authentication="name">Alex Rivera</span>
+                <span sec:authorize="!isAuthenticated()">Guest</span>
+            </div>
+        </div>
         
         <!-- Navigation -->
         <nav th:replace="~{fragments/nav :: nav}"></nav>
